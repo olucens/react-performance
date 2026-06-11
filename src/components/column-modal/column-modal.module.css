@@ -1,0 +1,50 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: white;
+  padding: 24px;
+  border-radius: 8px;
+  min-width: 400px;
+  max-height: 80vh;
+  overflow: auto;
+}
+
+.title {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.columnList {
+  margin-bottom: 16px;
+}
+
+.columnItem {
+  margin-bottom: 8px;
+}
+
+.checkbox {
+  margin-right: 8px;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.closeButton {
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
