@@ -1,3 +1,5 @@
+import { memo, useMemo } from 'react';
+import { List, type RowComponentProps } from 'react-window';
 import type { Country } from '../../types';
 import { CountryCard } from '../country-card/country-card';
 import { getPopulationForYear, createYearDataMap } from '../../utils/data-transformers';
@@ -15,7 +17,29 @@ type CountryListProps = {
   onYearChange: (year: number) => void;
 };
 
-export const CountryList = ({
+type RowProps = {
+  items: Country[];
+  selectedYear: number;
+  selectedColumns: string[];
+};
+
+const CountryRow = ({
+  index,
+  style,
+  items,
+  selectedYear,
+  selectedColumns,
+}: RowComponentProps<RowProps>) => (
+  <div style={style}>
+    <CountryCard
+      country={items[index]}
+      selectedYear={selectedYear}
+      selectedColumns={selectedColumns}
+    />
+  </div>
+);
+
+export const CountryList = memo(({
   countries,
   searchQuery,
   selectedColumns,
@@ -24,32 +48,42 @@ export const CountryList = ({
   sortField,
   sortOrder,
 }: CountryListProps) => {
-  const filteredCountries = countries
-    .filter((c) => {
-      const matchesSearch = c.id.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredCountries = useMemo(() => {
+    const lowerSearch = searchQuery.toLowerCase();
+
+    const filtered = countries.filter((c) => {
+      const matchesSearch = c.id.toLowerCase().includes(lowerSearch);
       const matchesRegion = !selectedRegion || c.data.some((d) => d.region === selectedRegion);
       return matchesSearch && matchesRegion;
-    })
-    .sort((a, b) => {
-      if (sortField === 'name') {
-        return sortOrder === 'asc' ? a.id.localeCompare(b.id) : b.id.localeCompare(a.id);
-      } else {
-        const popA = getPopulationForYear(createYearDataMap(a.data), selectedYear) || 0;
-        const popB = getPopulationForYear(createYearDataMap(b.data), selectedYear) || 0;
-        return sortOrder === 'asc' ? popA - popB : popB - popA;
-      }
     });
+
+    if (sortField === 'name') {
+      return filtered.sort((a, b) =>
+        sortOrder === 'asc' ? a.id.localeCompare(b.id) : b.id.localeCompare(a.id)
+      );
+    }
+
+    // Pre-compute population per country once — avoids createYearDataMap inside sort comparator
+    const withPop = filtered.map((c) => ({
+      country: c,
+      pop: getPopulationForYear(createYearDataMap(c.data), selectedYear) ?? 0,
+    }));
+    withPop.sort((a, b) => (sortOrder === 'asc' ? a.pop - b.pop : b.pop - a.pop));
+    return withPop.map((x) => x.country);
+  }, [countries, searchQuery, selectedRegion, selectedYear, sortField, sortOrder]);
+
+  // Height: card header+stats (~90px) + table rows (32px each) + padding (40px)
+  const rowHeight = 90 + selectedColumns.length * 32 + 40;
 
   return (
     <div className={styles.countryList}>
-      {filteredCountries.map((country, index) => (
-        <CountryCard
-          key={index}
-          country={country}
-          selectedYear={selectedYear}
-          selectedColumns={selectedColumns}
-        />
-      ))}
+      <List
+        rowCount={filteredCountries.length}
+        rowHeight={rowHeight}
+        rowComponent={CountryRow}
+        rowProps={{ items: filteredCountries, selectedYear, selectedColumns }}
+        style={{ height: '600px' }}
+      />
     </div>
   );
-};
+});
