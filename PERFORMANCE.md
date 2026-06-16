@@ -49,20 +49,20 @@ measuring the impact of React optimization techniques.
 
 ### Interaction B: Search countries (type "United")
 
-- **Commit duration**: \_\_\_ ms
-- **Render duration**: \_\_\_ ms
+- **Commit duration**: 1,7 s
+- **Render duration**: 48,5 ms
 - **Screenshot**: ![baseline search](./screenshots/baseline/search.png)
 
 ### Interaction C: Change year
 
-- **Commit duration**: \_\_\_ ms
-- **Render duration**: \_\_\_ ms
+- **Commit duration**: 2,7 s
+- **Render duration**: 25,9 ms
 - **Screenshot**: ![baseline year](./screenshots/baseline/year.png)
 
 ### Interaction D: Toggle column
 
-- **Commit duration**: \_\_\_ ms
-- **Render duration**: \_\_\_ ms
+- **Commit duration**: 1,1 s
+- **Render duration**: 54,1 ms
 - **Screenshot**: ![baseline column](./screenshots/baseline/column.png)
 
 ### Baseline bottlenecks observed
@@ -86,26 +86,26 @@ on every keystroke / sort / year change. Expected findings in the flame chart:
 
 ### Interaction A: Sort countries
 
-- **Commit duration**: \_\_\_ ms
-- **Render duration**: \_\_\_ ms
+- **Commit duration**: 1,3 s
+- **Render duration**: 15,9 ms
 - **Screenshot**: ![optimized sort](./screenshots/optimized/sort.png)
 
 ### Interaction B: Search countries (type "United")
 
-- **Commit duration**: \_\_\_ ms
-- **Render duration**: \_\_\_ ms
+- **Commit duration**: 2,1 s
+- **Render duration**: 34,8 ms
 - **Screenshot**: ![optimized search](./screenshots/optimized/search.png)
 
 ### Interaction C: Change year
 
-- **Commit duration**: \_\_\_ ms
-- **Render duration**: \_\_\_ ms
+- **Commit duration**: 2,5 s
+- **Render duration**: 37 ms
 - **Screenshot**: ![optimized year](./screenshots/optimized/year.png)
 
 ### Interaction D: Toggle column
 
-- **Commit duration**: \_\_\_ ms
-- **Render duration**: \_\_\_ ms
+- **Commit duration**: 1,3 s
+- **Render duration**: 14,2 ms
 - **Screenshot**: ![optimized column](./screenshots/optimized/column.png)
 
 ---
